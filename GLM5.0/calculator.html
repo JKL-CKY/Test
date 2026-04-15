@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运算函数计算器</title>
+    <style>
+        .calculator {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        input, select, button {
+            margin: 5px;
+            padding: 8px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>计算器</h2>
+        <input type="number" id="num1" placeholder="第一个数字">
+        <select id="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">×</option>
+            <option value="/">÷</option>
+        </select>
+        <input type="number" id="num2" placeholder="第二个数字">
+        <br>
+        <button onclick="calculate()">计算</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculate(num1, operator, num2) {
+            let n1, op, n2;
+            
+            if (arguments.length === 3) {
+                n1 = num1;
+                op = operator;
+                n2 = num2;
+            } else {
+                n1 = parseFloat(document.getElementById('num1').value);
+                op = document.getElementById('operator').value;
+                n2 = parseFloat(document.getElementById('num2').value);
+            }
+
+            if (isNaN(n1) || isNaN(n2)) {
+                const error = '请输入有效的数字';
+                if (arguments.length === 0) {
+                    document.getElementById('result').textContent = error;
+                }
+                throw new Error(error);
+            }
+
+            let result;
+            switch (op) {
+                case '+':
+                    result = n1 + n2;
+                    break;
+                case '-':
+                    result = n1 - n2;
+                    break;
+                case '*':
+                    result = n1 * n2;
+                    break;
+                case '/':
+                    if (n2 === 0) {
+                        const error = '除数不能为零';
+                        if (arguments.length === 0) {
+                            document.getElementById('result').textContent = error;
+                        }
+                        throw new Error(error);
+                    }
+                    result = n1 / n2;
+                    break;
+                default:
+                    const error = '无效的运算符';
+                    if (arguments.length === 0) {
+                        document.getElementById('result').textContent = error;
+                    }
+                    throw new Error(error);
+            }
+
+            if (arguments.length === 0) {
+                document.getElementById('result').textContent = `结果: ${n1} ${op} ${n2} = ${result}`;
+            }
+            return result;
+        }
+
+        console.log('运算函数测试:');
+        console.log('5 + 3 =', calculate(5, '+', 3));
+        console.log('10 - 4 =', calculate(10, '-', 4));
+        console.log('6 * 7 =', calculate(6, '*', 7));
+        console.log('20 / 5 =', calculate(20, '/', 5));
+    </script>
+</body>
+</html>
